@@ -3,7 +3,7 @@
 :root {
   color-scheme: dark;
   --bg: #05080f;
-  --panel: rgba(14, 20, 36, 0.72);
+  --panel: rgba(14, 20, 36, 0.66);
   --panel-2: rgba(28, 38, 64, 0.6);
   --line: rgba(160, 180, 230, 0.13);
   --fg: #eef2fb;

@@ -5,10 +5,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
-/* Layout: phone-first column over a slow aurora; a realistic metal card holds the balance; glass panels; floating glass tab bar */
+/* Layout: phone-first column over a WebGL gradient; a realistic metal card holds the balance; glass panels; floating glass tab bar */
 :root{
   color-scheme:dark;
-  --bg:#070b14; --bg-2:#0c1322; --glass:rgba(22,31,52,.62); --glass-2:rgba(32,44,72,.55); --line:rgba(160,180,230,.14);
+  --bg:#070b14; --bg-2:#0c1322; --glass:rgba(16,23,40,.7); --glass-2:rgba(30,41,68,.62); --line:rgba(160,180,230,.14);
   --fg:#eef2fb; --muted:#93a0bf; --accent:#e7b75a; --accent-ink:#1a1306; --accent-soft:rgba(231,183,90,.14);
   --in:#46d39a; --in-soft:rgba(70,211,154,.13); --out:#ff8a72; --out-soft:rgba(255,138,114,.13); --warn:#f2b84b;
   --aur-1:#0f6b56; --aur-2:#24307a; --aur-3:#7a4a12;
@@ -20,13 +20,13 @@
 }
 @media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
   color-scheme:light;
-  --bg:#edf1f6; --bg-2:#e4eaf3; --glass:rgba(255,255,255,.72); --glass-2:rgba(255,255,255,.6); --line:rgba(30,45,80,.1);
+  --bg:#edf1f6; --bg-2:#e4eaf3; --glass:rgba(255,255,255,.76); --glass-2:rgba(255,255,255,.7); --line:rgba(30,45,80,.1);
   --fg:#111a2c; --muted:#5b6682; --accent:#9a6a12; --accent-ink:#fff8e8; --accent-soft:rgba(154,106,18,.1);
   --in:#0f8a5c; --in-soft:rgba(15,138,92,.1); --out:#c4432a; --out-soft:rgba(196,67,42,.09); --warn:#b7791f;
   --aur-1:#9fe3cc; --aur-2:#b9c4f5; --aur-3:#f3d9a6; --shadow:0 18px 40px -20px rgba(20,30,60,.35); --bar:rgba(255,255,255,.9)}}
 :root[data-theme="light"]{
   color-scheme:light;
-  --bg:#edf1f6; --bg-2:#e4eaf3; --glass:rgba(255,255,255,.72); --glass-2:rgba(255,255,255,.6); --line:rgba(30,45,80,.1);
+  --bg:#edf1f6; --bg-2:#e4eaf3; --glass:rgba(255,255,255,.76); --glass-2:rgba(255,255,255,.7); --line:rgba(30,45,80,.1);
   --fg:#111a2c; --muted:#5b6682; --accent:#9a6a12; --accent-ink:#fff8e8; --accent-soft:rgba(154,106,18,.1);
   --in:#0f8a5c; --in-soft:rgba(15,138,92,.1); --out:#c4432a; --out-soft:rgba(196,67,42,.09); --warn:#b7791f;
   --aur-1:#9fe3cc; --aur-2:#b9c4f5; --aur-3:#f3d9a6; --shadow:0 18px 40px -20px rgba(20,30,60,.35); --bar:rgba(255,255,255,.9)}
@@ -42,17 +42,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer;-webkit-user-select:none;user-select:none}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:10px}
 
-/* aurora */
-.aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:radial-gradient(120% 80% at 50% -10%,var(--bg-2),var(--bg) 60%)}
-.aurora i{position:absolute;width:70vmax;height:70vmax;border-radius:50%;filter:blur(70px);opacity:.55;mix-blend-mode:screen}
-@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .aurora i{mix-blend-mode:multiply;opacity:.5}}
-:root[data-theme="light"] .aurora i{mix-blend-mode:multiply;opacity:.5}
-.aurora i:nth-child(1){background:var(--aur-1);left:-30vmax;top:-25vmax;animation:drift1 22s ease-in-out infinite alternate}
-.aurora i:nth-child(2){background:var(--aur-2);right:-35vmax;top:5vmax;animation:drift2 26s ease-in-out infinite alternate}
-.aurora i:nth-child(3){background:var(--aur-3);left:10vmax;bottom:-45vmax;opacity:.35;animation:drift1 30s ease-in-out infinite alternate-reverse}
-@keyframes drift1{to{transform:translate(12vmax,8vmax) scale(1.15)}}
-@keyframes drift2{to{transform:translate(-10vmax,12vmax) scale(.9)}}
-.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+/* animated background (WebGL, drawn at low resolution) */
+#bg{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;display:block;background:var(--bg)}
+#bg.fallback{background:radial-gradient(60% 50% at 10% 0%,var(--aur-1),transparent 70%),radial-gradient(60% 50% at 100% 30%,var(--aur-2),transparent 70%),radial-gradient(50% 40% at 40% 100%,var(--aur-3),transparent 70%),var(--bg)}
 
 .wrap{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
 
@@ -65,7 +57,7 @@ button{cursor:pointer;-webkit-user-select:none;user-select:none}
 .brand{font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:-.04em;display:flex;align-items:center;gap:8px}
 .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft),0 0 18px var(--accent);animation:pulse 2.6s ease-in-out infinite}
 @keyframes pulse{50%{box-shadow:0 0 0 7px transparent,0 0 26px var(--accent)}}
-.month{display:flex;align-items:center;gap:2px;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:999px;padding:3px}
+.month{display:flex;align-items:center;gap:2px;background:var(--glass);border:1px solid var(--line);border-radius:999px;padding:3px}
 .month button{border:0;background:transparent;width:34px;height:34px;border-radius:999px;font-size:18px;color:var(--muted);transition:background .2s,transform .15s}
 .month button:hover{background:var(--glass-2)} .month button:active{transform:scale(.88)}
 .month b{font-weight:600;font-size:14px;min-width:104px;text-align:center;text-transform:capitalize}
@@ -108,7 +100,7 @@ button{cursor:pointer;-webkit-user-select:none;user-select:none}
 .card .brandmark{font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:-.04em;color:#f1d38b;text-shadow:0 1px 0 rgba(0,0,0,.4)}
 
 /* glass panel */
-.panel{position:relative;background:var(--glass);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);
+.panel{position:relative;background:var(--glass);
   border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0;box-shadow:var(--shadow)}
 .panel-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
 .link{border:0;background:none;color:var(--accent);font-weight:600;font-size:14px;padding:4px 0}
@@ -218,7 +210,7 @@ button{cursor:pointer;-webkit-user-select:none;user-select:none}
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;pointer-events:none;
   padding:0 max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 .tabs .in{pointer-events:auto;position:relative;max-width:420px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:6px;border-radius:22px;
-  background:var(--bar);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border:1px solid var(--line);box-shadow:0 20px 40px -16px rgba(0,0,0,.55)}
+  background:var(--bar);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--line);box-shadow:0 20px 40px -16px rgba(0,0,0,.55)}
 .tabs .pill{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 20px)/3);border-radius:16px;background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);
   transform:translateX(calc(var(--t,0) * (100% + 4px)));transition:transform .45s var(--ease)}
 .tabs button{position:relative;border:0;background:transparent;border-radius:16px;padding:8px 4px;font-weight:600;font-size:12px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;transition:color .25s}
@@ -235,8 +227,7 @@ button{cursor:pointer;-webkit-user-select:none;user-select:none}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 
-<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
-<div class="grain" aria-hidden="true"></div>
+<canvas id="bg" aria-hidden="true"></canvas>
 <div class="toast" id="toast" role="status"><span class="ok">✓</span><span id="toastTxt">Salvo</span></div>
 
 <div class="wrap">
@@ -376,6 +367,68 @@ function parseValor(s){
 const cents = v => Math.round(Number(v||0)*100);
 
 const st = { items:[], month:today().slice(0,7), budget:null, db:null, uid:null, col:null, conta:null, sample:null, drafts:[], turns:[], view:'home' };
+
+
+/* ---------- WebGL background ---------- */
+(function bg(){
+  const canvas = $('#bg');
+  const gl = canvas.getContext('webgl', {antialias:false, alpha:false, powerPreference:'low-power'});
+  if (!gl) { canvas.classList.add('fallback'); return; }
+  const VS = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+  const FS = `precision mediump float;uniform vec2 r;uniform float t;uniform vec2 m;uniform float L;
+  float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+  void main(){
+    vec2 uv=gl_FragCoord.xy/r; vec2 q=uv*2.-1.; q.x*=r.x/r.y; q*=1.5; float tt=t*.07;
+    for(int i=1;i<6;i++){float fi=float(i);
+      q+=vec2(.55/fi*sin(fi*q.y+tt*(1.+fi*.15)+.3*fi)+.25,.55/fi*sin(fi*q.x+tt*1.25+.6*fi)-.2);}
+    float a=.5+.5*sin(q.x+q.y), b=.5+.5*cos(q.x*1.3-q.y*.8);
+    vec2 dv=uv-m/r; dv.x*=r.x/r.y; float glow=exp(-dot(dv,dv)*9.);
+    vec2 g=(gl_FragCoord.xy+vec2(0.,t*9.))/(r.y*.075); vec2 id=floor(g); vec2 f=fract(g)-.5; float h=hash(id);
+    vec2 off=vec2(hash(id+3.1),hash(id+7.7))-.5; float tw=.5+.5*sin(t*1.7+h*50.);
+    float s=smoothstep(.09,0.,length(f-off*.6))*step(.88,h)*tw;
+    vec3 col;
+    if(L<.5){
+      col=vec3(.027,.043,.078);
+      col+=vec3(.05,.45,.35)*pow(a,2.5)*.9; col+=vec3(.17,.21,.6)*pow(b,1.8)*.9; col+=vec3(.66,.44,.1)*pow(a*b,3.)*1.25;
+      col+=vec3(.95,.72,.35)*.15*glow; col+=vec3(1.,.88,.62)*s*.55;
+      col*=1.-.45*pow(length(uv-vec2(.5,.45)),1.8);
+    } else {
+      col=vec3(.93,.95,.975);
+      col=mix(col,vec3(.62,.9,.8),pow(a,2.)*.7); col=mix(col,vec3(.74,.78,.98),pow(b,1.8)*.65); col=mix(col,vec3(.98,.86,.62),pow(a*b,5.)*.6);
+      col=mix(col,vec3(1.,.9,.7),.25*glow); col=mix(col,vec3(.85,.65,.25),s*.45);
+    }
+    col+=(hash(gl_FragCoord.xy+fract(t))-.5)*.02;
+    gl_FragColor=vec4(col,1.);
+  }`;
+  const mk = (type, src) => { const x = gl.createShader(type); gl.shaderSource(x, src); gl.compileShader(x); return x; };
+  const prog = gl.createProgram();
+  gl.attachShader(prog, mk(gl.VERTEX_SHADER, VS)); gl.attachShader(prog, mk(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { canvas.classList.add('fallback'); return; }
+  gl.useProgram(prog);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,3,-1,-1,3]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const U = n => gl.getUniformLocation(prog, n), uR = U('r'), uT = U('t'), uM = U('m'), uL = U('L');
+  const scale = Math.min(devicePixelRatio || 1, 2) * (innerWidth < 700 ? .42 : .55);
+  let w = 1, h = 1;
+  const resize = () => { w = Math.max(1, Math.floor(innerWidth*scale)); h = Math.max(1, Math.floor(innerHeight*scale)); canvas.width = w; canvas.height = h; gl.viewport(0,0,w,h); };
+  resize(); addEventListener('resize', resize);
+  const darkMq = matchMedia('(prefers-color-scheme: dark)');
+  const isLight = () => { const t = document.documentElement.getAttribute('data-theme'); return t ? t === 'light' : !darkMq.matches; };
+  let tx = .5, ty = .65, mx = .5, my = .65;
+  const mv = e => { tx = e.clientX/innerWidth; ty = 1 - e.clientY/innerHeight; };
+  addEventListener('pointermove', mv, {passive:true}); addEventListener('pointerdown', mv, {passive:true});
+  const t0 = performance.now(); let raf = 0, last = 0;
+  const draw = now => {
+    mx += (tx-mx)*.08; my += (ty-my)*.08;
+    gl.uniform2f(uR, w, h); gl.uniform1f(uT, (now - t0)/1000 + 12); gl.uniform2f(uM, mx*w, my*h); gl.uniform1f(uL, isLight() ? 1 : 0);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  };
+  const loop = now => { raf = requestAnimationFrame(loop); if (now - last < 24) return; last = now; draw(now); };
+  if (reduce) { draw(t0); darkMq.addEventListener?.('change', () => draw(t0)); return; }
+  raf = requestAnimationFrame(loop);
+  document.addEventListener('visibilitychange', () => { cancelAnimationFrame(raf); if (!document.hidden) raf = requestAnimationFrame(loop); });
+})();
 
 /* ---------- effects ---------- */
 function countTo(el, to){

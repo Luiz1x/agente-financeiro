@@ -25,7 +25,7 @@ void main(){
   p.x *= r.x / r.y;
 
   float tt = t * 0.07;
-  vec2 q = p;
+  vec2 q = p * 1.5;
   for (int i = 1; i < 6; i++) {
     float fi = float(i);
     q += vec2(0.55 / fi * sin(fi * q.y + tt * (1.0 + fi * 0.15) + 0.3 * fi) + 0.25,
@@ -40,9 +40,9 @@ void main(){
   vec3 gold  = vec3(0.62, 0.42, 0.10);
 
   vec3 col = base;
-  col += emer * pow(a, 3.0) * 0.85;
-  col += indi * pow(b, 2.2) * 0.75;
-  col += gold * pow(a * b, 5.0) * 1.1;
+  col += emer * pow(a, 2.5) * 0.9;
+  col += indi * pow(b, 1.8) * 0.9;
+  col += gold * pow(a * b, 3.0) * 1.25;
 
   // pointer glow
   vec2 mm = m / r;
@@ -60,7 +60,7 @@ void main(){
   col += vec3(1.0, 0.88, 0.62) * s * 0.55;
 
   // vignette + grain
-  col *= 1.0 - 0.6 * pow(length(uv - vec2(0.5, 0.45)), 1.6);
+  col *= 1.0 - 0.45 * pow(length(uv - vec2(0.5, 0.45)), 1.8);
   col += (hash(gl_FragCoord.xy + fract(t)) - 0.5) * 0.02;
 
   gl_FragColor = vec4(col, 1.0);
