@@ -13,9 +13,9 @@
 </div>
 
 <p align="center">
-  <img src="docs/inicio-dark.png" width="240" alt="Tela inicial no tema escuro">
-  <img src="docs/categorias.png" width="240" alt="Limite do mês e gastos por categoria">
+  <img src="docs/inicio.png" width="240" alt="Tela inicial com o cartão do saldo">
   <img src="docs/extrato.png" width="240" alt="Extrato do mês">
+  <img src="docs/insights.png" width="240" alt="Insights com gráfico de gastos por dia">
 </p>
 
 ## Funcionalidades

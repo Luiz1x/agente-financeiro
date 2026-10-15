@@ -34,7 +34,7 @@ void main(){
   float a = 0.5 + 0.5 * sin(q.x + q.y);
   float b = 0.5 + 0.5 * cos(q.x * 1.3 - q.y * 0.8);
 
-  vec3 base  = vec3(0.022, 0.035, 0.068);
+  vec3 base  = vec3(0.03, 0.045, 0.09);
   vec3 emer  = vec3(0.05, 0.42, 0.33);
   vec3 indi  = vec3(0.16, 0.20, 0.55);
   vec3 gold  = vec3(0.62, 0.42, 0.10);
@@ -60,7 +60,7 @@ void main(){
   col += vec3(1.0, 0.88, 0.62) * s * 0.55;
 
   // vignette + grain
-  col *= 1.0 - 0.45 * pow(length(uv - vec2(0.5, 0.45)), 1.8);
+  col *= 1.0 - 0.3 * pow(length(uv - vec2(0.5, 0.45)), 1.8);
   col += (hash(gl_FragCoord.xy + fract(t)) - 0.5) * 0.02;
 
   gl_FragColor = vec4(col, 1.0);
