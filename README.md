@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="icon.svg" width="88" alt="Ícone do Bolso">
+<img src="public/icon.svg" width="88" alt="Ícone do Bolso">
 
 # Bolso
 
@@ -20,45 +20,50 @@
 
 ## Funcionalidades
 
-- **Lançamento em linguagem natural**: a IA lê frases como "mercado 146,90" ou "recebi 500 de presente" e separa vários lançamentos numa frase só. Dá pra conferir e corrigir antes de salvar.
+- **Lançamento em linguagem natural**: frases como "mercado 146,90 e pizza 38" ou "recebi 500 de presente" viram lançamentos separados, com valor, categoria e data. Dá pra conferir e corrigir antes de salvar.
 - **Cartão com o saldo do mês**: quanto entrou, quanto saiu e quanto sobrou. O cartão se inclina e muda o reflexo de luz ao toque.
 - **Limite mensal**: anel de progresso que muda de cor perto do teto, e quanto ainda dá pra gastar por dia.
 - **Gastos por categoria**, com barras proporcionais.
 - **Extrato** do mês, agrupado por dia.
-- **Assistente financeiro**: chat que responde perguntas sobre os seus próprios gastos.
-- **Tema claro e escuro** automáticos, feito pra celular e instalável na tela inicial (PWA).
+- **Insights**: média por dia, projeção do mês, comparação com o mês anterior, gráfico de gastos por dia e uma dica baseada nos seus números.
+- **Assistente com IA** (na versão dentro do Claude): chat que responde perguntas sobre os seus próprios gastos.
+- **Fundo animado em WebGL**, painéis com luz que segue o cursor e animações em tudo. Feito pra celular e instalável na tela inicial (PWA).
 
 ## Tecnologias
 
-- HTML, CSS e JavaScript puro, sem framework e sem build: o app inteiro está em um arquivo.
-- CSS moderno: `backdrop-filter` (vidro), `@property` (borda animada), `color-mix`, perspectiva 3D e animações com `prefers-reduced-motion` respeitado.
-- Dados e IA pelos **Artifacts do Claude** (Anthropic):
-  - `claude.use("db")`: banco de documentos em tempo real, com os dados de cada pessoa privados;
-  - `claude.use("sample")`: chamadas ao modelo de IA para ler os lançamentos e responder no chat.
-- **Modo demonstração**: fora do Claude, o app roda com dados de exemplo salvos no navegador (`localStorage`). É essa a versão publicada no GitHub Pages.
+- **Next.js 14** (App Router, exportação estática) + **React 18** + **TypeScript**
+- **Framer Motion**: transições entre telas, cartão 3D com física de mola, contadores animados, lista que anima ao apagar, explosão de moedas ao salvar
+- **WebGL**: fundo animado feito com shader próprio (gradiente fluindo, brilho que segue o dedo e partículas), renderizado em baixa resolução para rodar leve no celular
+- **Interpretador de frases** em TypeScript (`lib/parse.ts`): entende valores como "18,50", "1.250,00" e "1,8k", datas como "ontem" e "dia 5", e várias compras numa frase só
+- **GitHub Actions**: a cada push, o site é compilado e publicado no GitHub Pages
+- Versão com IA de verdade em `claude/bolso.html`, que roda como Artifact do Claude: dados salvos na nuvem (`claude.use("db")`) e um modelo de IA para ler os lançamentos e conversar sobre os gastos (`claude.use("sample")`)
 
 ## Como rodar
 
-**Demonstração:** abra o link acima. Para instalar no Android, abra no Chrome, toque em ⋮ e escolha *Adicionar à tela inicial*.
+```bash
+npm install
+npm run dev
+```
 
-**Localmente:** baixe o repositório e abra o `index.html` no navegador. Não precisa instalar nada.
-
-**Versão completa (com IA e dados salvos):** publique o `bolso.html` como Artifact no claude.ai, com as capacidades `db`, `user` e `sample`.
+Abra http://localhost:3000. Os dados ficam salvos no navegador (`localStorage`).
 
 ## Próximos passos
 
 - [ ] Conexão com bancos via Open Finance, para importar os gastos automaticamente
 - [ ] Metas de economia (ex.: guardar R$ 300 até dezembro)
 - [ ] Gráfico de evolução mês a mês
-- [ ] Versão independente com Supabase e API de IA própria
+- [ ] Login e dados na nuvem com Supabase
+- [ ] IA própria via API, também fora do Claude
 
 ## Estrutura
 
 ```
-index.html             versão publicada no GitHub Pages (modo demonstração)
-bolso.html             versão para rodar como Artifact no Claude
-manifest.webmanifest   configuração para instalar como app
-icon.svg, icon-*.png   ícones
+app/                   páginas do Next.js (layout, página e estilos)
+components/            App, cartão, painéis, fundo WebGL
+lib/                   tipos, cálculos e interpretador de frases
+public/                ícones e manifesto do app
+claude/bolso.html      versão com IA que roda dentro do Claude
+.github/workflows/     publicação automática no GitHub Pages
 docs/                  prints das telas
 ```
 
